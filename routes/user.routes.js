@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { createUser } from '../controllers/usercontroller.js';
 
 const userRoutes= Router()
 
@@ -9,8 +10,7 @@ userRoutes.get('/', (req, res) => {
 
 })
 
-
-
+userRoutes.post('/create', createUser);
 
 export default userRoutes
 

@@ -2,9 +2,9 @@ import express from 'express'
 import userRoutes from './routes/user.routes.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose'; // <-- use ES module import
-import userModel from './models/user.model.js';
 const app = express();
 const port = 5555;
+import itemRoutes from "./routes/item.routes.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,55 +26,13 @@ mongoose.connect(process.env.DATABASE_URL, {
 
 });
 
-//fetch api ko run krna hy
-//.then accept statement
-//// try {
-    
-// } catch (error) {
-//     console.error('Error connecting to MongoDB:', error);
-    
-// }
-
-
-// fetch('https://api.example.com/data').then
-
-
-
-
 // Middleware to parse JSON bodies from POST requests
 app.use(express.json());
-app.use("/user", userRoutes) //clr+space auto import
-
-// Start server
-
+app.use("/user", userRoutes); //clr+space auto import
+app.use("/item", itemRoutes); // <-- Changed from /items to /item
 
 app.get('/', (req, res) => {
     res.send('connected to backend server');
-});
-
-app.post('/create', async (req, res) => {
-    // Extract data from request body
-    const { name, email, age, password } = req.body;
-
-    try {
-        // Create user in MongoDB
-        const user =  userModel.create({ name, email, age, password });
-
-        // Send success response
-        res.send({
-            status: "success",
-            data: user,
-            code: 200
-        });
-    } catch (error) {
-        console.error('post api error:', error);
-
-        // Send error response
-        res.status(400).send({
-            status: false,
-            error: error.message
-        });
-    }
 });
 
 app.listen(port, () => {
